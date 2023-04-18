@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MyApp // Note: actual namespace depends on the project name.
 {
@@ -18,7 +19,16 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
 // Ao cadastrar uma passagem ao final o sistema deverá perguntar se gostaria de cadastrar uma nova passagem caso contrário voltar ao menu anterior(S/N).
 
-            static bool Login(string senha){
+            string[] nome = new string[2];
+            string[] origem = new string[2];
+            string[] destino = new string[2];
+            string[] dataVoo = new string[2];
+
+            string senha;
+            char opcao;
+            char resposta;
+
+            static bool ValidacaoSenha(string senha){
                 if (senha != "999")
                 {
                     return true;
@@ -29,103 +39,78 @@ namespace MyApp // Note: actual namespace depends on the project name.
                 }
             }
 
-            // static void UseParams(params string[] Passagens)
-            // {
-            //     for (int i = 0; i < Passagens.Length; i++)
-            //     {
-            //         Passagens[i] = 
-            //         @$"nome:" {nome};
-            //         "origem:" {origem};
-            //         "destino:" {destino};
-            //         "data do voo:" {datadoVoo};
-            //     }
-            // }
-
-            static string CadastroPassagens(){
-
-                Console.WriteLine($"Qual o nome do dono da passagem ?");
-                var nome = Console.ReadLine();
-                Console.WriteLine($"");
-                
-
-                Console.WriteLine($"Qual a origem do voo ?");
-                var origem = Console.ReadLine();
-                Console.WriteLine($"");
-
-                Console.WriteLine($"Qual o destino do voo ?");
-                var destino = Console.ReadLine();
-                Console.WriteLine($"");   
-
-                Console.WriteLine($"Qual a data do voo ?\nEscreva no formato: xx/yy/zz");
-                var dataDoVoo = Console.ReadLine();
-                Console.WriteLine($"");
-
-                Console.WriteLine($"Passagem Cadastrada com sucesso! Gostaria de cadastrar outra passagem ?\n(Digite S para sim e N para Nao)");
-                var continuar = char.Parse(Console.ReadLine());
-                while (continuar != 's' && continuar != 'n')
-                {
-                    Console.WriteLine($"Desculpe, nao entendi, favor digitar novamente!\nGostaria de cadastrar outra passagem ?\n(Digite S para sim e N para Nao)");
-                    continuar = char.Parse(Console.ReadLine());
-                }
-                if (continuar == 's')
-                {
-                    return CadastroPassagens();
-                }
-                else
-                {
-                    return "Aqui estao as passagens listadas:"; 
-                    Console.WriteLine($"Aqui estao as passagens listadas:");
-                    
-                }
-                
-            }
-
-            string nome;
-
-            string origem;
-
-            string destino;
-
-            string dataDoVoo;
-
-            char continuar;
-            
-            string senha;
-
-            char escolha;
-
-            Console.WriteLine($"Antes de comecarmos, digite sua senha:");
-            senha = Console.ReadLine();
-            Console.WriteLine($"");
-
-            while (Login(senha))
-            {
-                Console.WriteLine($"Senha incorreta!, digite novamente:");
+                Console.WriteLine($"Digite a senha:");
                 senha = Console.ReadLine();
-                Console.WriteLine($"");
+                while (ValidacaoSenha(senha))
+                {
+                    Console.WriteLine($"Senha incorreta, digite novamente!");
+                    senha = Console.ReadLine();
+                }
+                Console.Clear();
+
+            while (true)
+            {
+                Console.WriteLine("Digite a opção desejada:");
+                Console.WriteLine("1- Cadastrar passagem");
+                Console.WriteLine("2- Listar Passagens");
+                Console.WriteLine("0- Sair");
+                
+                opcao = char.Parse(Console.ReadLine());
+
+                switch (opcao)
+                {
+                    case '1':
+                    do
+                    {
+                        for (var i = 0; i < 2; i++)
+                        {
+                        Console.WriteLine($"Qual o nome do passageiro {i+1} ?");
+                        nome[i] = Console.ReadLine();
+                        
+                        Console.WriteLine($"Qual a origem do Voo {i+1} ?");
+                        origem[i] = Console.ReadLine();
+                        
+                        Console.WriteLine($"Qual o destino do Voo {i+1} ?");
+                        destino[i] = Console.ReadLine();
+
+                        Console.WriteLine($"Qual a data do Voo {i+1} ? (DD/MM/AAAA)");
+                        dataVoo[i] = Console.ReadLine();
+                        }
+                        Console.WriteLine($"Gostaria de cadastrar outra passagem ? S/N");
+                        resposta = char.Parse(Console.ReadLine());
+                        
+                    } while (resposta == 's');
+
+                        break;
+
+                    case '2':
+                    for (var i = 0; i < 2; i++)
+                    {
+                        Console.WriteLine(@$"
+                        Nome: {nome[i]}
+                        Origem: {origem[i]}
+                        destino: {destino[i]}
+                        data: {dataVoo[i]}
+                        ");
+                        
+                    }
+                        break;
+
+                    case '0':
+                    Console.WriteLine($"O programa sera encerrado...");
+                    
+                        return;
+
+                    default:
+                    Console.WriteLine($"Opcao invalida, Digite novamente!");
+                    
+                        break;
+                }
                 
             }
 
-            Console.WriteLine($"Acesso liberado, gostaria de cadastrar alguma passagem ?\n(Digite S para sim e N para Nao)");
-            escolha = char.Parse(Console.ReadLine());
 
-            while (escolha !='s' && escolha !='n')
-                {
-                    Console.WriteLine($"Algo foi digitado incorretamente! Digite novamente!\nGostaria de cadastrar alguma passagem ?\n(Digite S para sim e N para Nao)");
-                    escolha = char.Parse(Console.ReadLine());
-                }
 
-            switch (escolha)
-            {
-                case 's':
-                CadastroPassagens();
-                    break;
-                default:
-                Console.WriteLine($"Certo, encerrando programa de cadastro...");
-                    break;
-            }
-            
-            
             
         }
     }
